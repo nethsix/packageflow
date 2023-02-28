@@ -38,5 +38,5 @@ jobs:
           PACKAGE-NAME: dist/*.tar.gz
           PACKAGECLOUD-USERNAME: khor_main_test
           PACKAGECLOUD-REPONAME: test
-          PACKAGECLOUD-DISTRO: focal
+          PACKAGECLOUD-DISTRO: ubuntu/focal
           PACKAGECLOUD-TOKEN: ${{ secrets.packagecloud_token }}
