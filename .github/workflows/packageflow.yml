@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: create sample script
+        run: |
+          mkdir -p .debpkg/usr/bin
+          mkdir -p .debpkg/usr/lib/samplescript
+          echo -e "echo sample" > .debpkg/usr/bin/samplescript
+          chmod +x .debpkg/usr/bin/samplescript
+          echo -e "a=1" > .debpkg/usr/lib/samplescript/samplescript.conf
+
+          # create DEBIAN directory if you want to add other pre/post scripts
+          mkdir -p .debpkg/DEBIAN
+          echo -e "echo postinst" > .debpkg/DEBIAN/postinst
+          chmod +x .debpkg/DEBIAN/postinst
+      - uses: jiro4989/build-deb-action@v2
+        with:
+          package: samplescript
+          package_root: .debpkg
+          maintainer: your_name
+          version: ${{ github.ref }} # refs/tags/v*.*.*
+          arch: 'amd64'
+          depends: 'libc6 (>= 2.2.1), git'
+          desc: 'this is sample package.'
+      - name: push package to packagecloud.io
+        uses: computology/packagecloud-github-action@v0.6
+        with:
+##### MODIFY: Change to packagecloud username, reponame, distro type
+#####         To understand the available distro type, see <https://www.rubydoc.info/gems/package_cloud/#pushing-a-package>
+          PACKAGE-NAME: dist/*.tar.gz
+          PACKAGECLOUD-USERNAME: khor_20230228_0735
+          PACKAGECLOUD-REPONAME: test
+          PACKAGECLOUD-DISTRO: focal
+          PACKAGECLOUD-TOKEN: ${{ secrets.packagecloud_token }}
