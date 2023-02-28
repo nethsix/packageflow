@@ -35,7 +35,7 @@ jobs:
         with:
 ##### MODIFY: Change to packagecloud username, reponame, distro type
 #####         To understand the available distro type, see <https://www.rubydoc.info/gems/package_cloud/#pushing-a-package>
-          PACKAGE-NAME: dist/*.tar.gz
+          PACKAGE-NAME: *.deb
           PACKAGECLOUD-USERNAME: khor_main_test
           PACKAGECLOUD-REPONAME: test
           PACKAGECLOUD-DISTRO: ubuntu/focal
